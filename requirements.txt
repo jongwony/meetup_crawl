@@ -1,3 +1,4 @@
+jmespath
 bs4
 requests
 selenium
