@@ -20,10 +20,13 @@ class MeetUpSession(requests.Session):
             'accept-encoding': 'gzip, deflate, br',
             'content-type': 'application/json; charset=utf-8',
             'cache-control': 'no-cache',
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/78.0.3904.108 Safari/537.36',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
-            'x-meetup-activity': 'standardized_url=%2Furlname%2Fevents%2FeventId%2Fattendees&standardized_referer=%2Furlname%2Fevents%2FeventId',
+            'x-meetup-activity': 'standardized_url=%2Furlname%2Fevents%2FeventId%2Fattendees&'
+                                 'standardized_referer=%2Furlname%2Fevents%2FeventId',
             'referer': f'https://www.meetup.com/ko-KR/awskrug/events/{self.event_id}/attendees/',
         }
         with get_token(self.event_id, headless=False) as cookies:
@@ -48,7 +51,14 @@ class MeetUpSession(requests.Session):
 
     def get(self, **kwargs):
         assert self.event_id is not None
-        get_attendee_params = {'queries': f"(endpoint:awskrug/events/{self.event_id}/rsvps,meta:(method:get),params:(desc:!t,fields:'answers,pay_status,self,web_actions,attendance_status',only:'answers,response,attendance_status,guests,member,pay_status,updated',order:time),ref:eventAttendees_awskrug_{self.event_id},type:attendees)"}
+        get_attendee_params = {
+            'queries': f"(endpoint:awskrug/events/{self.event_id}/rsvps,"
+                       f"meta:(method:get),"
+                       f"params:(desc:!t,fields:'answers,pay_status,self,web_actions,attendance_status',"
+                       f"only:'answers,response,attendance_status,guests,member,pay_status,updated',order:time),"
+                       f"ref:eventAttendees_awskrug_{self.event_id},"
+                       f"type:attendees)"
+        }
         response = super().get(
             self.api_url,
             params=get_attendee_params,
@@ -60,8 +70,12 @@ class MeetUpSession(requests.Session):
     def post(self, **kwargs):
         assert self.member_id is not None
         assert self.amount is not None
-        assert self.event_id is not None
-        post_attendee_data = quote_plus(f"(endpoint:awskrug/events/{self.event_id}/payments,meta:(method:post),params:(amount:{self.amount},eventId:'{self.event_id}',member:{self.member_id},urlname:awskrug),ref:markAsPaid)")
+        post_attendee_data = quote_plus(
+            f"(endpoint:awskrug/events/{self.event_id}/payments,"
+            f"meta:(method:post),"
+            f"params:(amount:{self.amount},eventId:'{self.event_id}',member:{self.member_id},urlname:awskrug),"
+            f"ref:markAsPaid)"
+        )
         self.req_headers['content-type'] = 'application/x-www-form-urlencoded'
 
         response = super().post(
@@ -79,7 +93,8 @@ if __name__ == '__main__':
 
     resp = session.get()
     attendees = resp.json()
-    get_attendee_query = 'responses[0].value[].{updated: updated, id: member.id, name: member.name, pay_status: pay_status, response: response, bio: answers[0].answer}'
+    get_attendee_query = "responses[0].value[].{updated: updated, id: member.id, name: member.name, " \
+                         "pay_status: pay_status, response: response, bio: answers[0].answer}"
     attendees_data = jmespath.search(get_attendee_query, attendees)
     pprint(attendees_data)
 
