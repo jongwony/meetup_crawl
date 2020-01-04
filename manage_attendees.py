@@ -21,8 +21,7 @@ class MeetUpSession(requests.Session):
             'content-type': 'application/json; charset=utf-8',
             'cache-control': 'no-cache',
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) '
-                          'AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/78.0.3904.108 Safari/537.36',
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
             'x-meetup-activity': 'standardized_url=%2Furlname%2Fevents%2FeventId%2Fattendees&'
