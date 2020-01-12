@@ -2,7 +2,7 @@ from urllib.parse import quote_plus
 
 import requests
 
-from crawl import get_token
+from attendees.crawl import get_token
 
 
 class MeetUpSession(requests.Session):

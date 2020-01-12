@@ -3,7 +3,7 @@ from pprint import pprint
 
 import jmespath
 
-from session_control import MeetUpSession
+from attendees.session_control import MeetUpSession
 
 
 def ack(session: MeetUpSession, method: str, *args, **kwargs):

@@ -1,8 +1,8 @@
 import pickle
 from contextlib import contextmanager
 
-from common.chrome import init, wait_for
-from common.io import config, script_path
+from attendees.common.chrome import init, wait_for
+from attendees.common.io import config, script_path
 
 
 def login(driver, event_id):
